@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Report</title>
+  <link rel="stylesheet" type="text/css" href="report.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <div class="title-bar">
+    <img src="https://scontent.fmnl25-1.fna.fbcdn.net/v/t1.15752-9/348383127_1905405623155679_9178131715999935996_n.png?_nc_cat=108&ccb=1-7&_nc_sid=ae9488&_nc_ohc=lgjwfhxVg7YAX-re0F6&_nc_ht=scontent.fmnl25-1.fna&oh=03_AdSUSjNHF3f6VnbYmCaIut7NzIusAx5rLbODV0Nz_JbeQA&oe=64933BAE" alt="Logo" class="logo">
+    <div class="title-container">
+      <h1 class="title">Anomaly Report</h1>
+      <div class="date-time">
+        <p>[</p><p class="date-time-label" id="current-date-time"></p> <p>]</p>
+      </div>
+    </div>
+    <button class="print-button" onclick="printReport()">Print</button>
+  </div>
+  
+  <div class="container">
+  <div class="box high">
+    <h2 class="box-title">High</h2>
+    <div class="separator"></div>
+    <div class="box-description" id="high-description"></div>
+  </div>
+  <div class="box medium">
+    <h2 class="box-title">Medium</h2>
+    <div class="separator"></div>
+    <div class="box-description" id="medium-description"></div>
+  </div>
+  <div class="box low">
+    <h2 class="box-title">Low</h2>
+    <div class="separator"></div>
+    <div class="box-description" id="low-description"></div>
+  </div>
+</div>
+  
+  <script>
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString();
+    const currentTime = currentDate.toLocaleTimeString();
+    const dateTimeString = `Date: ${formattedDate} | Time: ${currentTime}`;
+    document.getElementById('current-date-time').textContent = dateTimeString;
+
+    function generateDescription(timestamp, type, name) {
+      const formattedTimestamp = timestamp; // Use the provided timestamp as is (string)
+      return `${formattedTimestamp} [${type}] - ${name}`;
+    }
+
+    // Load example data from a separate file (example_data.json)
+    fetch('example_data.json')
+      .then(response => response.json())
+      .then(data => {
+        const highBox = document.querySelector('.box.high');
+        const highDescription = document.getElementById('high-description');
+        const mediumBox = document.querySelector('.box.medium');
+        const mediumDescription = document.getElementById('medium-description');
+        const lowBox = document.querySelector('.box.low');
+        const lowDescription = document.getElementById('low-description');
+
+        data.forEach(item => {
+          const { timestamp, type, name, category } = item;
+          const description = generateDescription(timestamp, type, name);
+          const boxItem = document.createElement('p');
+          boxItem.textContent = description;
+
+          if (category === 'High') {
+            highDescription.appendChild(boxItem);
+          } else if (category === 'Medium') {
+            mediumDescription.appendChild(boxItem);
+          } else if (category === 'Low') {
+            lowDescription.appendChild(boxItem);
+          }
+        });
+      });
+    
+    function printReport() {
+    const element = document.body;
+    const opt = {
+      margin: 1,
+      filename: 'report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    // Start the conversion
+    html2pdf().set(opt).from(element).save();
+  }
+  </script>
+</body>
+</html>

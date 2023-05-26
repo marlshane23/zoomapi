@@ -1,0 +1,112 @@
+body {
+    height: 100vh;
+    margin: 0;
+    background-color: #896437;
+    background-image: url('https://thumbs.dreamstime.com/b/comfortable-working-place-wooden-table-laptop-comfortable-working-place-wooden-table-laptop-plant-pen-paper-119327875.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .title-bar {
+    background-color: #1a1718;
+    color: #FFC000;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+  }
+  
+  .logo {
+    width: 150px;
+    height: 100px;
+    margin-right: 50px;
+  }
+  
+  .title {
+    font-size: 40px;
+    margin: 0;
+  }
+
+  .print-button {
+    margin-left: 850px;
+    background-color: #5c4216;
+    color: #FFC000;
+    border-radius: 8px;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    
+  }
+
+  .print-button:hover {
+    background-color: #aa7a28;
+  }
+
+  .print-button:active {
+    background-color: #5c4216;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto; 
+    margin-bottom: -16px;
+  }
+  
+  .box {
+    display: flex;
+    flex-direction: column;
+    background-color: #f4e2d7;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px #00000033;
+    margin: 16px;
+    width: 1200px;
+  }
+  
+  .box-title-bar {
+    background-color: #1a1718;
+    color: #FFC000;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .box-title {
+    font-size: 20px;
+    margin: 0;
+  }
+  
+  .box-description {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .date-time-label {
+    font-size: 16px;
+    margin: 0;
+  }
+  
+  .date-time {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+  
+  .date-time-separator {
+    margin: 0 8px;
+  }
+  
+  .separator {
+    border: none;
+    border-top: 3px solid #1a1718;
+    margin-bottom: 4px;
+  }

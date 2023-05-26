@@ -1,0 +1,73 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f1f1f1;
+    background-image: url('https://images.unsplash.com/photo-1617721926586-4eecce739745?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8ZW1wdHklMjBjbGFzc3Jvb218ZW58MHx8MHx8&w=1000&q=80');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+  }
+  
+  .box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    padding: 45px;
+    border-radius: 30px;
+    box-shadow: 0 2px 4px #00000033;
+    max-width: 400px;
+  }
+  
+  
+  .box-title {
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .box-description {
+    font-size: 16px;
+    margin-bottom: 24px;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    white-space: pre-wrap;
+  
+  }
+  
+  .button {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    width: 200px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .button-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  
+  .button-primary {
+    background-color: #1a1718;
+    color: #FFC000;
+  }
+  
+  .button-primary:hover {
+    background-color: #1a1718;
+  }

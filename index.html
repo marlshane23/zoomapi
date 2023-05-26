@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test App</title>
+  <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <img src="https://scontent.fmnl8-2.fna.fbcdn.net/v/t1.15752-9/344547084_115336954894121_4043413034470597678_n.png?stp=cp0_dst-png&_nc_cat=111&ccb=1-7&_nc_sid=ae9488&_nc_ohc=BneMj9BgEI8AX_g7NiV&_nc_ht=scontent.fmnl8-2.fna&oh=03_AdTt-CKUjh7godfNRtuGGwtkAty0iVdfgW00da-iGvQKKw&oe=648AA4DC" alt="Logo">
+            <h2 class="box-title">iWatch</h2>
+            <p class="box-description">iWatch is a proctoring software application designed to detect anomalous behavior in online examinations and maintain academic integrity online.</p>
+            <button id="startMeetingButton" class="button button-primary">
+              <img src="https://www.shareicon.net/data/2015/09/19/103413_videocamera_512x512.png" alt="Logo" class="button-icon">
+              Start a Meeting
+            </button>
+      </div>
+    </div>
+
+  <script>
+    const startMeetingBtn = document.getElementById('startMeetingBtn');
+
+    startMeetingBtn.addEventListener('click', () => {
+      const buttonText = startMeetingBtn.textContent;
+      alert(`${buttonText} clicked!`);
+
+      // Call the createMeeting() function here to start the Zoom meeting
+      createMeeting();
+    });
+  </script>
+</body>
+</html>
