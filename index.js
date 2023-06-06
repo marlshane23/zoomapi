@@ -1,72 +1,12 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const jwt = require('jsonwebtoken');
-const axios = require('axios');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
+const axios = require('axios');
 
-const API_KEY = 'OI8AJ51PQru71qGrUW4wpA';
-const API_SEC = 'AcMxRsinMr1ucVNRxCF5VaxkBzvtKt2kGkA5';
-const userId = 'N0JrDsJyTpW82ns-JOQveg';
-
-function generateToken() {
-  const token = jwt.sign(
-    { iss: API_KEY, exp: Math.floor(Date.now() / 1000) + 5000 },
-    API_SEC,
-    { algorithm: 'HS256' }
-  );
-  return token;
-}
-
-async function createMeeting() {
-  const headers = {
-    authorization: `Bearer ${generateToken()}`,
-    'content-type': 'application/json',
-  };
-
-  const meetingDetails = {
-    topic: 'aXension',
-    type: 2,
-    start_time: '2019-06-14T10:21:57',
-    duration: '45',
-    timezone: 'Europe/Madrid',
-    agenda: 'test',
-    recurrence: {
-      type: 1,
-      repeat_interval: 1,
-    },
-    settings: {
-      host_video: 'true',
-      participant_video: 'true',
-      join_before_host: 'False',
-      mute_upon_entry: 'False',
-      watermark: 'true',
-      audio: 'voip',
-      auto_recording: 'cloud',
-    },
-  };
-
-  try {
-    const response = await axios.post(
-      `https://api.zoom.us/v2/users/${userId}/meetings`,
-      meetingDetails,
-      { headers }
-    );
-
-    const meetingId = response.data.id;
-    const joinUrl = response.data.join_url;
-
-   
-    return joinUrl;
-  } catch (error) {
-    console.error('Error creating Zoom meeting:', error.message);
-    throw error;
-  }
-}
-
-let mainWindow;
-let reportWindow;
+const clientId = 'sHtaAfrsSwyA4q7FoIdF7w';
+const redirectUri = 'https://denisseduque.pythonanywhere.com/?code=agt97jsswUBIbjFaf0MSGKI_A0M4VZqEQ';
 
 function createMainWindow() {
-  mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 400,
     height: 300,
     webPreferences: {
@@ -77,38 +17,56 @@ function createMainWindow() {
 
   mainWindow.loadFile('index.html');
 
-  ipcMain.handle('startMeeting', async (event) => {
+  ipcMain.handle('startMeeting', async () => {
     try {
-      const joinUrl = await createMeeting();
-      return joinUrl;
+      const meetingId = await createMeeting();
+      if (meetingId) {
+        const zoomMeetingUrl = `zoommtg://zoom.us/join?confno=${meetingId}`;
+        shell.openExternal(zoomMeetingUrl);
+
+        // Wait for a delay before opening the Zoom OAuth page
+        setTimeout(() => {
+          const zoomOAuthUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+          shell.openExternal(zoomOAuthUrl);
+        }, 3000); // Adjust the delay as needed
+      } else {
+        // Failed to create meeting
+        console.error('Failed to create Zoom meeting');
+      }
     } catch (error) {
-      console.error('Error starting Zoom meeting:', error.message);
-      throw error;
+      console.error('Error starting the meeting:', error);
     }
   });
 
   mainWindow.on('closed', () => {
-    mainWindow = null;
-    if (!reportWindow) {
-      createReportWindow();
-    }
+    app.quit();
   });
 }
 
-function createReportWindow() {
-  reportWindow = new BrowserWindow({
-    width: 1500,
-    height: 800,
-    webPreferences: {
-      nodeIntegration: true,
-    },
-  });
+async function createMeeting() {
+  try {
+    // Make an API call to create a Zoom meeting
+    const response = await axios.post(
+      'https://api.zoom.us/v2/users/me/meetings',
+      {
+        topic: 'aXension',
+        type: 1,
+      },
+      {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJPSThBSjUxUFFydTcxcUdyVVc0d3BBIiwiZXhwIjoxNjg2MDM0Mzk3LCJpYXQiOjE2ODYwMzA3OTd9.SHluBl0O5EKinnDU7vlMWn7ZPJONbjZtI5abH4M1Av4', // Replace with your valid access token
+        },
+      }
+    );
 
-  reportWindow.loadFile('report.html');
+    // Extract the meeting ID from the response
+    const { id } = response.data;
 
-  reportWindow.on('closed', () => {
-    reportWindow = null;
-  });
+    return id;
+  } catch (error) {
+    console.error('Failed to create Zoom meeting:', error);
+    return null;
+  }
 }
 
 app.whenReady().then(createMainWindow);
@@ -126,7 +84,6 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.on('generate-report', () => {
-  if (!reportWindow) {
-    createReportWindow();
-  }
+  // Handle generating the report
+
 });
